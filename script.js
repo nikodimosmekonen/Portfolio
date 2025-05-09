@@ -103,3 +103,73 @@ function typeWriter() {
 
 setTimeout(typeWriter, 1000);
 
+// Animate skill bars on scroll
+const skillBars = document.querySelectorAll('.skill-progress');
+
+function animateSkillBars() {
+    skillBars.forEach(bar => {
+        const targetWidth = bar.getAttribute('data-width');
+        bar.style.width = targetWidth;
+    });
+}
+
+// Intersection Observer for animations
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            if (entry.target.classList.contains('skill-progress')) {
+                animateSkillBars();
+            }
+        }
+    });
+}, { threshold: 0.1 });
+
+// Observe skill bars
+skillBars.forEach(bar => {
+    observer.observe(bar);
+});
+
+// Form submission
+const contactForm = document.getElementById('contact-form');
+
+contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form values
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const subject = document.getElementById('subject').value;
+    const message = document.getElementById('message').value;
+    
+    // Here you would typically send the form data to a server
+    // For this example, we'll just log it to the console
+    console.log('Form submitted:', { name, email, subject, message });
+    
+    // Reset form
+    contactForm.reset();
+    
+    // Show success message (in a real application)
+    alert('Message sent successfully!');
+});
+
+// Active navigation based on scroll position
+window.addEventListener('scroll', () => {
+    const scrollPosition = window.scrollY;
+    
+    // Get all sections
+    const sections = document.querySelectorAll('section');
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            // Remove active class from all links
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            // Add active class to corresponding link
+            document.querySelector(`nav ul li a[href="#${sectionId}"]`).classList.add('active');
+        }
+    });
+});
